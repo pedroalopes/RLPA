@@ -9,4 +9,7 @@ This work is one challenge workshop presented on MICCAI 2018. Our solution is in
  
 ## Network
  UNet and Deeplab+3 are the basis of our solutions.  We rebuilded them to fit the data in the challenge. 
+ 
+ ## Source
+ Forked from [https://github.com/cswin/RLPA](source)
 
