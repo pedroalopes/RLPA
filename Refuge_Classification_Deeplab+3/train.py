@@ -60,21 +60,21 @@ random.shuffle(imagePaths)
 
 # loop over the input images
 for imagePath in imagePaths:
-	# load the image, pre-process it, and store it in the data list
-	image = cv2.imread(imagePath)
-	image = cv2.resize(image, (image_width, image_high))
-	image = img_to_array(image)
-	image[:,:,0] -= 107.546
-	image[:,:,1] -= 60.8877
-	image[:,:,2] -= 29.6568
-	data.append(image)
+    # load the image, pre-process it, and store it in the data list
+    image = cv2.imread(imagePath)
+    image = cv2.resize(image, (image_width, image_high))
+    image = img_to_array(image)
+    image[:,:,0] -= 107.546
+    image[:,:,1] -= 60.8877
+    image[:,:,2] -= 29.6568
+    data.append(image)
 
-	# extract the class label from the image path and update the
-	# labels list
-	label = imagePath.split(os.path.sep)[5]
-	cla = 0 if label[0:1] == "n" else 1
-	#print(label+':'+str(cla))
-	labels.append(cla)
+    # extract the class label from the image path and update the
+    # labels list
+    label = imagePath.split(os.path.sep)[5]
+    cla = 0 if label[0:1] == "n" else 1
+    #print(label+':'+str(cla))
+    labels.append(cla)
 
 
 # In[4]:
@@ -88,7 +88,7 @@ labels = np.array(labels)
 # partition the data into training and testing splits using 75% of
 # the data for training and the remaining 25% for testing
 (trainX, testX, trainY, testY) = train_test_split(data,
-	labels, test_size=0.30, random_state=42)
+    labels, test_size=0.30, random_state=42)
 
 # convert the labels from integers to vectors
 trainY = to_categorical(trainY, num_classes=2)
@@ -96,8 +96,8 @@ testY = to_categorical(testY, num_classes=2)
 
 # construct the image generator for data augmentation
 aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
-	height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
-	horizontal_flip=True, fill_mode="nearest")
+    height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
+    horizontal_flip=True, fill_mode="nearest")
 
 
 # In[5]:
@@ -114,7 +114,7 @@ model =  Deeplabv3(input_shape=(image_width,image_high,3), classes=2)
 
 opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
 model.compile(loss="binary_crossentropy", optimizer=opt,
-	metrics=["accuracy"])
+    metrics=["accuracy"])
 
 # train the network
 print("[INFO] training network...")
@@ -122,8 +122,8 @@ model_checkpoint = ModelCheckpoint(modelName, monitor='val_acc',verbose=1, save_
 reduce_lr_loss = ReduceLROnPlateau(monitor='loss', factor=0.1, patience=10,
                                        verbose=1, epsilon=1e-4, mode='min')
 H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),
-	validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS,
-	epochs=EPOCHS, verbose=1,callbacks=[model_checkpoint,reduce_lr_loss])
+    validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS,
+    epochs=EPOCHS, verbose=1,callbacks=[model_checkpoint,reduce_lr_loss])
 
 # save the model to disk
 #print("[INFO] serializing network...")
