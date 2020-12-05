@@ -71,7 +71,7 @@ for imagePath in imagePaths:
 
     # extract the class label from the image path and update the
     # labels list
-    label = imagePath.split(os.path.sep)[5]
+    label = imagePath.split(os.path.sep)[2]
     cla = 0 if label[0:1] == "n" else 1
     #print(label+':'+str(cla))
     labels.append(cla)
